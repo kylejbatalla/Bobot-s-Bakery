@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order — Bobot's Bakery</title>
+  <meta name="description" content="Place an order with Bobot's Bakery — pickup orders of pandesal, ensaymada, and more.">
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;500;600&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <img src="images/logo.png" alt="Bobot's Bakery logo">
+        <div class="brand-text">
+          <span class="brand-name">Bobot's Bakery</span>
+          <span class="brand-sub">homemade, baked fresh</span>
+        </div>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle navigation">&#9776;</button>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="order.html" class="active">Order</a></li>
+        <li><a href="contact.html">About &amp; Contact</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" style="padding: 3.5rem 1.5rem 3rem;">
+      <div class="hero-inner">
+        <h1>Place an Order</h1>
+        <p class="tagline">we'll bake it fresh, just for you</p>
+      </div>
+    </section>
+
+    <div class="bamboo-divider"></div>
+
+    <section>
+      <div class="container order-wrapper">
+
+        <div class="coming-soon-banner" id="comingSoonBanner">
+          <strong>&#127820; Online ordering coming soon!</strong>
+          For now, please message Marnold or Normita on Facebook, or give us a call to place your order.
+          You're welcome to fill out the form below to plan your order — we'll have submission live shortly.
+        </div>
+
+        <form class="order-form" id="orderForm">
+
+          <h2 style="margin-bottom:0.4rem;">Your Information</h2>
+          <p style="color:var(--wood); margin-bottom:1.5rem;">So we know who to bake for.</p>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Full Name *</label>
+              <input type="text" id="name" name="name" maxlength="25" required>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone Number *</label>
+              <input type="tel" id="phone" name="phone" placeholder="(831) 555-1234" maxlength="11" inputmode="numeric" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input type="email" id="email" name="email" placeholder="you@example.com" maxlength="25" required>
+              <small style="color:var(--wood); font-style:italic; display:block; margin-top:0.4rem;">
+                Where we will send you the receipt and pickup address.
+              </small>
+            </div>
+            <div class="form-group">
+              <label for="pickupDate">Pickup Date *</label>
+              <input type="date" id="pickupDate" name="pickupDate" required>
+            </div>
+          </div>
+
+          <h2 style="margin-top:2rem; margin-bottom:0.4rem;">Your Order</h2>
+          <p style="color:var(--wood); margin-bottom:1.5rem;">Enter the quantity for each item you'd like.</p>
+
+          <table class="order-items-table">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th style="text-align:right;">Subtotal</th>
+              </tr>
+            </thead>
+            <tbody id="orderItemsBody">
+              <tr data-price="8" data-unit="dozen" data-key="plain_pandesal_dz">
+                <td>Plain Pandesal</td>
+                <td>$8 / dozen</td>
+                <td><input type="number" min="0" max="5" value="0" class="qty"></td>
+                <td class="subtotal" style="text-align:right;">$0</td>
+              </tr>
+              <tr data-price="8" data-unit="dozen" data-key="ube_pandesal_dz">
+                <td>Ube Pandesal</td>
+                <td>$8 / dozen</td>
+                <td><input type="number" min="0" max="5" value="0" class="qty"></td>
+                <td class="subtotal" style="text-align:right;">$0</td>
+              </tr>
+              <tr data-price="8" data-unit="dozen" data-key="pandan_pandesal_dz">
+                <td>Pandan Pandesal</td>
+                <td>$8 / dozen</td>
+                <td><input type="number" min="0" max="5" value="0" class="qty"></td>
+                <td class="subtotal" style="text-align:right;">$0</td>
+              </tr>
+              <tr data-price="10" data-unit="dozen" data-key="ube_cheese_pandesal_dz">
+                <td>Ube Pandesal w/ Cheese</td>
+                <td>$10 / dozen</td>
+                <td><input type="number" min="0" max="5" value="0" class="qty"></td>
+                <td class="subtotal" style="text-align:right;">$0</td>
+              </tr>
+              <tr data-price="15" data-unit="dozen" data-key="spanish_bread_dz">
+                <td>Spanish Bread (dozen)</td>
+                <td>$15 / dozen</td>
+                <td><input type="number" min="0" max="5" value="0" class="qty"></td>
+                <td class="subtotal" style="text-align:right;">$0</td>
+              </tr>
+              <tr data-price="8" data-unit="6 pcs" data-key="spanish_bread_6">
+                <td>Spanish Bread (6 pcs)</td>
+                <td>$8 / 6 pcs</td>
+                <td><input type="number" min="0" max="5" value="0" class="qty"></td>
+                <td class="subtotal" style="text-align:right;">$0</td>
+              </tr>
+              <tr data-price="8" data-unit="4 pcs" data-key="plain_ensaymada_4">
+                <td>Plain Ensaymada</td>
+                <td>$8 / 4 pcs</td>
+                <td><input type="number" min="0" max="5" value="0" class="qty"></td>
+                <td class="subtotal" style="text-align:right;">$0</td>
+              </tr>
+              <tr data-price="10" data-unit="4 pcs" data-key="ube_cheese_ensaymada_4">
+                <td>Ube &amp; Cheese Ensaymada</td>
+                <td>$10 / 4 pcs</td>
+                <td><input type="number" min="0" max="5" value="0" class="qty"></td>
+                <td class="subtotal" style="text-align:right;">$0</td>
+              </tr>
+              <tr data-price="15" data-unit="dozen" data-key="pan_de_coco_dz">
+                <td>Pan de Coco (dozen)</td>
+                <td>$15 / dozen</td>
+                <td><input type="number" min="0" max="5" value="0" class="qty"></td>
+                <td class="subtotal" style="text-align:right;">$0</td>
+              </tr>
+              <tr data-price="8" data-unit="6 pcs" data-key="pan_de_coco_6">
+                <td>Pan de Coco (6 pcs)</td>
+                <td>$8 / 6 pcs</td>
+                <td><input type="number" min="0" max="5" value="0" class="qty"></td>
+                <td class="subtotal" style="text-align:right;">$0</td>
+              </tr>
+              <tr data-price="10" data-unit="dozen" data-key="malunggay_pandesal_dz">
+                <td>Malunggay Pandesal</td>
+                <td>$10 / dozen</td>
+                <td><input type="number" min="0" max="5" value="0" class="qty"></td>
+                <td class="subtotal" style="text-align:right;">$0</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="3" style="text-align:right; padding-top:1rem; font-weight:600; font-family:var(--font-display); font-size:1.1rem;">Total</td>
+                <td id="orderTotal" style="text-align:right; padding-top:1rem; font-weight:700; font-family:var(--font-display); font-size:1.3rem; color:var(--flag-red);">$0</td>
+              </tr>
+            </tfoot>
+          </table>
+
+          <h2 style="margin-top:2rem; margin-bottom:0.4rem;">Payment</h2>
+          <p style="color:var(--wood); margin-bottom:1rem;">
+            Payment is only required upon pickup. Large orders may require prepayment &mdash; we'll let you know.
+          </p>
+
+          <fieldset class="payment-options" id="paymentOptions" style="border:none; padding:0; margin:0;">
+            <legend class="visually-hidden" style="position:absolute; left:-9999px;">Payment method</legend>
+            <label class="payment-option">
+              <input type="radio" name="payment" value="Cash">
+              <span class="payment-label">
+                <span class="payment-icon">&#128181;</span>
+                <span class="payment-name">Cash</span>
+              </span>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="payment" value="Zelle">
+              <span class="payment-label">
+                <span class="payment-icon">&#128241;</span>
+                <span class="payment-name">Zelle</span>
+              </span>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="payment" value="Venmo">
+              <span class="payment-label">
+                <span class="payment-icon">&#128178;</span>
+                <span class="payment-name">Venmo</span>
+              </span>
+            </label>
+          </fieldset>
+          <p class="payment-error-msg" id="paymentError" role="alert" aria-live="polite">
+            &#9888;&#65039; Please choose a payment method.
+          </p>
+
+          <div class="form-group" style="margin-top:1.5rem;">
+            <label for="notes">Special Requests / Notes</label>
+            <textarea id="notes" name="notes" rows="4" maxlength="100" placeholder="Allergies, special occasion, anything we should know..."></textarea>
+            <small id="notesCounter" style="color:var(--wood); font-style:italic; display:block; margin-top:0.3rem;">0 / 100</small>
+          </div>
+
+          <div id="orderStatus" style="display:none; padding:1rem 1.2rem; border-radius:8px; margin-bottom:1rem;"></div>
+
+          <button type="submit" class="btn btn-primary" id="submitBtn" style="width:100%; padding:1rem;">
+            Submit Order Request
+          </button>
+          <p id="submitNote" style="text-align:center; margin-top:1rem; font-style:italic; color:var(--wood); font-size:0.9rem;">
+            (Submission is currently a preview — coming soon!)
+          </p>
+        </form>
+
+        <section class="section-alt">
+      <div class="container">
+        <h2 class="section-title">Want to order through phone?</h2>
+        <p style="text-align:center; margin-bottom:2rem; font-size:1.05rem;">
+          Message us on Facebook, or give us a call/text.
+        </p>
+
+        <div class="contact-grid">
+
+          <div class="contact-card">
+            <h3>&#128104;&#8205;&#127859; Marnold Batalla</h3>
+
+            <div class="contact-method">
+              <div class="contact-icon">&#9742;</div>
+              <div>
+                <div class="contact-method-label">Phone</div>
+                <a href="tel:+18313208673" class="contact-method-value">(831) 320-8673</a>
+              </div>
+            </div>
+
+            <div class="contact-method">
+              <div class="contact-icon">f</div>
+              <div>
+                <div class="contact-method-label">Facebook</div>
+                <a href="https://www.facebook.com/" target="_blank" rel="noopener" class="contact-method-value">Marnold Batalla</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <h3>&#128105;&#8205;&#127859; Normita D. Batalla</h3>
+
+            <div class="contact-method">
+              <div class="contact-icon">&#9742;</div>
+              <div>
+                <div class="contact-method-label">Phone</div>
+                <a href="tel:+18312616136" class="contact-method-value">(831) 261-6136</a>
+              </div>
+            </div>
+
+            <div class="contact-method">
+              <div class="contact-icon">f</div>
+              <div>
+                <div class="contact-method-label">Facebook</div>
+                <a href="https://www.facebook.com/" target="_blank" rel="noopener" class="contact-method-value">Normita Delos Santos Batalla</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="images/logo.png" alt="Bobot's Bakery">
+        <p style="font-family: var(--font-accent); font-size:1.3rem; color: var(--flag-yellow); margin-bottom:0.4rem;">homemade, baked fresh</p>
+        <p style="font-size:0.95rem; opacity:0.85;">Authentic Filipino breads baked with love — pandesal, ensaymada, pan de coco, and more.</p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="order.html">Order</a></li>
+          <li><a href="contact.html">About &amp; Contact</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>Marnold Batalla<br><a href="tel:+18313208673">(831) 320-8673</a></li>
+          <li>Normita D. Batalla<br><a href="tel:+18312616136">(831) 261-6136</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      Website developed and managed by <a href="https://kylejbatalla.github.io/Portfolio-Website/">Kyle Batalla</a><br>
+      &copy; <span id="year">2026</span> Bobot's Bakery. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
