@@ -540,6 +540,16 @@ section {
   cursor: pointer;
 }
 
+/* Firefox-only: Gecko ignores ::-webkit-calendar-picker-indicator and has
+   no equivalent pseudo-element, so the native icon can't be hidden.
+   Drop our custom SVG on Firefox and let the native indicator show. */
+@-moz-document url-prefix() {
+  .form-group input[type="date"] {
+    background-image: none;
+    padding-right: 0.9rem;
+  }
+}
+
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
