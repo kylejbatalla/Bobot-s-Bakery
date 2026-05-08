@@ -10,6 +10,10 @@
 (function () {
   'use strict';
 
+  // Hard coded date to ignore for date selector
+  const disabledDates = ['2026-05-09', '2026-05-10', '2026-05-25', '2026-05-26',
+    '2026-05-27', '2026-05-28', '2026-05-29', '2026-05-30', '2026-05-31'];
+
   // --- Mobile nav ---
   const navToggle = document.querySelector('.nav-toggle');
   const navLinks = document.querySelector('.nav-links');
@@ -70,32 +74,33 @@
   if (pickupDate) {
     const now = new Date();
 
-  // Get current Pacific hour
-  const pacificHour = new Intl.DateTimeFormat("en-US", {
-    timeZone: "America/Los_Angeles",
-    hour: "numeric",
-    hour12: false,
-  }).format(now);
+    // Get current Pacific hour
+    const pacificHour = new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/Los_Angeles",
+      hour: "numeric",
+      hour12: false,
+    }).format(now);
 
-  const hour = parseInt(pacificHour, 10);
+    const hour = parseInt(pacificHour, 10);
 
-  // Start from today
-  const minDate = new Date(now);
+    // Start from today
+    const minDate = new Date(now);
 
-  // If after 12 PM Pacific, minimum becomes tomorrow
-  if (hour >= 12) {
-    minDate.setDate(minDate.getDate() + 2);
-  } else {
-    minDate.setDate(minDate.getDate() + 1);
+    // If after 12 PM Pacific, minimum becomes tomorrow
+    if (hour >= 12) {
+      minDate.setDate(minDate.getDate() + 2);
+    } else {
+      minDate.setDate(minDate.getDate() + 1);
+    }
+
+    // Format as YYYY-MM-DD in local time
+    const year = minDate.getFullYear();
+    const month = String(minDate.getMonth() + 1).padStart(2, "0");
+    const day = String(minDate.getDate()).padStart(2, "0");
+
+    pickupDate.min = `${year}-${month}-${day}`;
+
   }
-
-  // Format as YYYY-MM-DD in local time
-  const year = minDate.getFullYear();
-  const month = String(minDate.getMonth() + 1).padStart(2, "0");
-  const day = String(minDate.getDate()).padStart(2, "0");
-
-  pickupDate.min = `${year}-${month}-${day}`;
-}
 
   // --- FAQ scroll-reveal animation ---
   const faqItems = document.querySelectorAll('.faq-item');
@@ -162,8 +167,8 @@
       if (!statusEl) return;
       const styles = {
         success: 'background:#e6f4ea; border:2px solid #2e7d32; color:#1b4d1f;',
-        error:   'background:#fde2e2; border:2px solid #ce1126; color:#5c3a1e;',
-        info:    'background:#fff3cd; border:2px solid #fcd116; color:#5c3a1e;'
+        error: 'background:#fde2e2; border:2px solid #ce1126; color:#5c3a1e;',
+        info: 'background:#fff3cd; border:2px solid #fcd116; color:#5c3a1e;'
       };
       statusEl.style.cssText =
         'display:block; padding:1rem 1.2rem; border-radius:8px; margin-bottom:1rem; ' +
@@ -220,21 +225,33 @@
         total: currentTotal
       };
 
-      if (!endpoint) {
-        // Endpoint not configured yet — show "coming soon" message
+      console.log(pickupDate.value);
+
+      // iOS Safari ignores the `min` attribute on <input type="date"> in its
+      // picker UI, so re-check it here as a safety net.
+      if (pickupDate.min && pickupDate.value < pickupDate.min) {
         showStatus(
-          'info',
-          "<strong>Thanks!</strong> Online ordering isn't fully wired up yet — please " +
-          '<a href="contact.html" style="color:var(--flag-red); font-weight:600;">message us directly</a> ' +
-          'to place this order. Once the Apps Script endpoint is configured, this form will submit automatically.'
+          'error',
+          "<strong>Pickup date too soon.</strong> We need at least one day's " +
+          "notice. Please choose " + pickupDate.min + " or later."
         );
         return;
       }
 
+      if (disabledDates.includes(pickupDate.value)) {
+        showStatus(
+          'error',
+          "<strong>Pickup date not available.</strong> We're sorry. " + pickupDate.value +
+          "<br>is not available. Please choose another pickup date, or " +
+          '<a href="contact.html" style="color:var(--flag-red); font-weight:600;">message us directly</a>. '
+        );
+        return;
+      }
+
+
       // Submit to Google Apps Script
       submitBtn.disabled = true;
       submitBtn.textContent = 'Sending order…';
-
       try {
         // text/plain avoids a CORS preflight; Apps Script reads e.postData.contents
         const res = await fetch(endpoint, {
