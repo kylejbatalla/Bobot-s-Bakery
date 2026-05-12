@@ -171,13 +171,28 @@
 
     // Returns today's date in YYYY-MM-DD, computed in Pacific time so that
     // the comparison matches what we use to set pickupDate.min above.
+    // Written without Object.fromEntries so it works on older iOS Safari.
     const todayPacific = () => {
-      const parts = new Intl.DateTimeFormat("en-CA", {
-        timeZone: "America/Los_Angeles",
-        year: "numeric", month: "2-digit", day: "2-digit"
-      }).formatToParts(new Date());
-      const lookup = Object.fromEntries(parts.map(p => [p.type, p.value]));
-      return `${lookup.year}-${lookup.month}-${lookup.day}`;
+      try {
+        const parts = new Intl.DateTimeFormat("en-CA", {
+          timeZone: "America/Los_Angeles",
+          year: "numeric", month: "2-digit", day: "2-digit"
+        }).formatToParts(new Date());
+        let y = "", m = "", d = "";
+        for (let i = 0; i < parts.length; i++) {
+          if (parts[i].type === "year")  y = parts[i].value;
+          if (parts[i].type === "month") m = parts[i].value;
+          if (parts[i].type === "day")   d = parts[i].value;
+        }
+        if (y && m && d) return y + "-" + m + "-" + d;
+      } catch (_) { /* fall through to local-time fallback */ }
+      // Fallback: local time. Better to mis-validate by a few hours than
+      // crash the whole submit handler.
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, "0");
+      const d = String(now.getDate()).padStart(2, "0");
+      return y + "-" + m + "-" + d;
     };
 
     orderForm.addEventListener('submit', async (e) => {
