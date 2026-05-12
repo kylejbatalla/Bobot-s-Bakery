@@ -7,7 +7,7 @@
   <meta name="description" content="Place an order with Bobot's Bakery — pickup orders of pandesal, ensaymada, and more.">
   <link rel="icon" type="image/png" href="images/logo.png">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;500;600&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="styles.css?v=3">
 </head>
 <body>
   <header class="site-header">
@@ -43,7 +43,10 @@
     <section>
       <div class="container order-wrapper">
 
-        <form class="order-form" id="orderForm">
+        <!-- novalidate: disable the browser's native required-field tooltips
+             (which are invisible behind the iOS soft keyboard) so script.js
+             can show its own styled error messages consistently. -->
+        <form class="order-form" id="orderForm" novalidate>
 
           <h2 style="margin-bottom:0.4rem;">Your Information</h2>
           <p style="color:var(--wood); margin-bottom:1.5rem;"><strong> Note:</strong> Delivery not available. Local pickup only in Salinas, Ca.<br>
@@ -297,6 +300,6 @@
   </footer>
 
   <script src="config.js"></script>
-  <script src="script.js?v=2"></script>
+  <script src="script.js?v=3"></script>
 </body>
 </html>

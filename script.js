@@ -215,6 +215,27 @@
         return;
       }
 
+      // Contact-info checks (form is `novalidate`, so we handle these here)
+      const nameVal  = document.getElementById('name').value.trim();
+      const phoneVal = document.getElementById('phone').value.trim();
+      const emailVal = document.getElementById('email').value.trim();
+
+      if (!nameVal) {
+        showStatus('error', "<strong>Name is required.</strong> Please enter your name so we know who the order is for.");
+        document.getElementById('name').focus();
+        return;
+      }
+      if (!phoneVal) {
+        showStatus('error', "<strong>Phone number is required.</strong> Please enter a phone number we can reach you at.");
+        document.getElementById('phone').focus();
+        return;
+      }
+      if (!emailVal || !/\S+@\S+\.\S+/.test(emailVal)) {
+        showStatus('error', "<strong>A valid email is required.</strong> Please double-check the email address — we'll send your receipt there.");
+        document.getElementById('email').focus();
+        return;
+      }
+
       // Payment method (radio group) — visual error state if missing
       const paymentEl = orderForm.querySelector('input[name="payment"]:checked');
       const paymentOptionsEl = document.getElementById('paymentOptions');
