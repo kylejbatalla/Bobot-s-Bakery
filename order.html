@@ -70,7 +70,10 @@
             </div>
             <div class="form-group">
               <label for="pickupDate">Pickup Date *</label>
-              <input type="date" id="pickupDate" name="pickupDate" required>
+              <!-- `required` is intentionally omitted so the form still
+                   submits when blank; script.js then shows a styled error
+                   message matching the rest of the form's error UI. -->
+              <input type="date" id="pickupDate" name="pickupDate">
             </div>
           </div>
 
