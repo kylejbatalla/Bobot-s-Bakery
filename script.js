@@ -159,13 +159,25 @@
       const styles = {
         success: 'background:#e6f4ea; border:2px solid #2e7d32; color:#1b4d1f;',
         error: 'background:#fde2e2; border:2px solid #ce1126; color:#5c3a1e;',
-        info: 'background:#fff3cd; border:2px solid #fcd116; color:#5c3a1e;'
+        info: 'background:#fff3cd; border:2px solid #fcd116; color:#5c3a1e;',
+        loading: 'background:#fff8db; border:2px solid #fcd116; color:#5c3a1e;'
       };
       statusEl.style.cssText =
         'display:block; padding:1rem 1.2rem; border-radius:8px; margin-bottom:1rem; ' +
         (styles[kind] || styles.info);
       statusEl.innerHTML = html;
       statusEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+
+    // Returns today's date in YYYY-MM-DD, computed in Pacific time so that
+    // the comparison matches what we use to set pickupDate.min above.
+    const todayPacific = () => {
+      const parts = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "America/Los_Angeles",
+        year: "numeric", month: "2-digit", day: "2-digit"
+      }).formatToParts(new Date());
+      const lookup = Object.fromEntries(parts.map(p => [p.type, p.value]));
+      return `${lookup.year}-${lookup.month}-${lookup.day}`;
     };
 
     orderForm.addEventListener('submit', async (e) => {
@@ -218,9 +230,30 @@
 
       console.log(pickupDate.value);
 
-      // iOS Safari ignores the `min` attribute on <input type="date"> in its
-      // picker UI, so re-check it here as a safety net.
-      if (pickupDate.value < pickupDate.min) {
+      // Missing date (iOS Safari may submit even with `required` in some cases)
+      if (!pickupDate.value) {
+        showStatus(
+          'error',
+          "<strong>Pickup date missing.</strong> Please choose a pickup date before submitting."
+        );
+        return;
+      }
+
+      // Mobile browsers (especially iOS Safari) ignore the `min` attribute
+      // and let users pick dates in the past. Catch that here.
+      const today = todayPacific();
+      if (pickupDate.value < today) {
+        showStatus(
+          'error',
+          "<strong>Pickup date not available.</strong> " + pickupDate.value +
+          " is in the past. Please choose a date on or after " +
+          (pickupDate.min || today) + "."
+        );
+        return;
+      }
+
+      // Date is in the future, but earlier than our minimum-notice cutoff.
+      if (pickupDate.min && pickupDate.value < pickupDate.min) {
         showStatus(
           'error',
           "<strong>Pickup date too soon.</strong> We need at least one day's " +
@@ -243,6 +276,11 @@
       // Submit to Google Apps Script
       submitBtn.disabled = true;
       submitBtn.textContent = 'Sending order…';
+      showStatus(
+        'loading',
+        "<strong>Sending your order…</strong> Please hold on a moment — this can take a few seconds." +
+        '<div class="bobots-progress" role="progressbar" aria-label="Sending order"></div>'
+      );
       try {
         const res = await fetch(endpoint, {
           method: 'POST',

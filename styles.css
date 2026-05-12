@@ -549,6 +549,38 @@ section {
   }
 }
 
+/* Indeterminate progress bar shown while an order is being sent.
+   A red/yellow Philippine-flag-themed stripe slides left-to-right. */
+.bobots-progress {
+  position: relative;
+  height: 10px;
+  width: 100%;
+  background: rgba(139, 90, 43, 0.15); /* faint wood-tone track */
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 0.75rem;
+}
+.bobots-progress::after {
+  content: '';
+  position: absolute;
+  left: -35%;
+  top: 0;
+  height: 100%;
+  width: 35%;
+  border-radius: 5px;
+  background: linear-gradient(
+    90deg,
+    var(--flag-red) 0%,
+    var(--flag-yellow) 50%,
+    var(--flag-red) 100%
+  );
+  animation: bobots-progress-slide 1.2s ease-in-out infinite;
+}
+@keyframes bobots-progress-slide {
+  0%   { left: -35%; }
+  100% { left: 100%; }
+}
+
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
