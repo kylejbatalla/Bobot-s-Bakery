@@ -220,7 +220,7 @@
 
       // iOS Safari ignores the `min` attribute on <input type="date"> in its
       // picker UI, so re-check it here as a safety net.
-      if (pickupDate.min && pickupDate.value < pickupDate.min) {
+      if (pickupDate.value < pickupDate.min) {
         showStatus(
           'error',
           "<strong>Pickup date too soon.</strong> We need at least one day's " +
