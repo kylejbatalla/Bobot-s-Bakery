@@ -1,8 +1,3 @@
-/* ===========================================
-   Bobot's Bakery — Warm Filipino Traditional
-   Bahay Kubo / Wooden aesthetic
-   =========================================== */
-
 :root {
   /* Warm wood & bamboo palette */
   --cream: #faf3e3;
@@ -521,6 +516,7 @@ section {
 .form-group input[type="date"] {
   -webkit-appearance: none;
   appearance: none;
+  position: relative; /* positioning context for the picker-indicator overlay */
   min-height: calc(1rem * 1.6 + 0.7rem * 2 + 2px); /* match text-input height */
   padding-right: 2.4rem; /* room for the icon */
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b5a2b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='4' width='18' height='18' rx='2' ry='2'/><line x1='16' y1='2' x2='16' y2='6'/><line x1='8' y1='2' x2='8' y2='6'/><line x1='3' y1='10' x2='21' y2='10'/></svg>");
@@ -530,13 +526,16 @@ section {
 }
 
 /* Hide the desktop-Chrome native indicator since we now draw our own,
-   so the icon doesn't appear twice on Chrome. */
+   so the icon doesn't appear twice on Chrome. We stretch the invisible
+   indicator over the entire input so clicking anywhere in the field
+   opens the date picker (Chromium only fires the picker via this element,
+   not via clicks on the input's text area). */
 .form-group input[type="date"]::-webkit-calendar-picker-indicator {
   opacity: 0;
   position: absolute;
-  right: 0.85rem;
-  width: 1.1rem;
-  height: 1.1rem;
+  inset: 0;
+  width: auto;
+  height: auto;
   cursor: pointer;
 }
 

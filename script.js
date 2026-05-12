@@ -1,12 +1,3 @@
-/* ============================================================
-   Bobot's Bakery — site interactivity
-   - Mobile nav toggle
-   - Order form quantity / subtotal / total calculator
-   - Order submission to Google Apps Script Web App
-   - Auto-update copyright year
-   - Set min pickup date (tomorrow)
-   ============================================================ */
-
 (function () {
   'use strict';
 
@@ -253,11 +244,10 @@
       submitBtn.disabled = true;
       submitBtn.textContent = 'Sending order…';
       try {
-        // text/plain avoids a CORS preflight; Apps Script reads e.postData.contents
         const res = await fetch(endpoint, {
           method: 'POST',
           mode: 'cors',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
         const data = await res.json().catch(() => ({}));
