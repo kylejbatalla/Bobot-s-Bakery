@@ -3,7 +3,8 @@
 
   // Hard coded date to ignore for date selector
   const disabledDates = ['2026-05-09', '2026-05-10', '2026-05-25', '2026-05-26',
-    '2026-05-27', '2026-05-28', '2026-05-29', '2026-05-30', '2026-05-31'];
+    '2026-05-27', '2026-05-28', '2026-05-29', '2026-05-30', '2026-05-31', '2026-08-03', '2026-08-04', '2026-08-05',
+    '2026-08-06', '2026-08-07', '2026-08-08', '2026-08-09'];
 
   // --- Mobile nav ---
   const navToggle = document.querySelector('.nav-toggle');
@@ -180,9 +181,9 @@
         }).formatToParts(new Date());
         let y = "", m = "", d = "";
         for (let i = 0; i < parts.length; i++) {
-          if (parts[i].type === "year")  y = parts[i].value;
+          if (parts[i].type === "year") y = parts[i].value;
           if (parts[i].type === "month") m = parts[i].value;
-          if (parts[i].type === "day")   d = parts[i].value;
+          if (parts[i].type === "day") d = parts[i].value;
         }
         if (y && m && d) return y + "-" + m + "-" + d;
       } catch (_) { /* fall through to local-time fallback */ }
@@ -216,7 +217,7 @@
       }
 
       // Contact-info checks (form is `novalidate`, so we handle these here)
-      const nameVal  = document.getElementById('name').value.trim();
+      const nameVal = document.getElementById('name').value.trim();
       const phoneVal = document.getElementById('phone').value.trim();
       const emailVal = document.getElementById('email').value.trim();
 
@@ -301,9 +302,9 @@
       if (disabledDates.includes(pickupDate.value)) {
         showStatus(
           'error',
-          "<strong>Pickup date not available.</strong> We're sorry. " + pickupDate.value +
+          "Pickup date " + pickupDate.value +
           "<br>is not available. Please choose another pickup date, or " +
-          '<a href="contact.html" style="color:var(--flag-red); font-weight:600;">message us directly</a>. '
+          '<a href="contact.html" style="color:var(--flag-red); font-weight:600;">message us directly.</a>  Next available pickup date starts August 10, 2026.'
         );
         return;
       }
