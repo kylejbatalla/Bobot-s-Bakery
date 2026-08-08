@@ -39,6 +39,11 @@
     </div>
   </header>
 
+  <!-- TEMPORARY: ordering pause banner (auto-clears after 2026-08-24). Remove this block and the script at the bottom of the page to restore normal ordering. -->
+  <div id="orderPauseBanner" style="display:none; background:var(--flag-red, #ce1126); color:#fff; text-align:center; padding:0.9rem 1.2rem; font-family:var(--font-body, sans-serif); font-size:1rem; line-height:1.4;">
+    &#9888;&#65039; <strong>Bobot's bakery is currently closed.</strong> Online ordering is paused and will reopen on <strong>August 24, 2026</strong>. Thanks for your patience &mdash; you can still reach us by phone or Facebook below.
+  </div>
+
   <main>
     <section class="hero" style="padding: 3.5rem 1.5rem 3rem;">
       <div class="hero-inner">
@@ -310,5 +315,62 @@
 
   <script src="config.js"></script>
   <script src="script.js?v=3"></script>
+
+  <!-- TEMPORARY: pause ordering until 2026-08-24 (Pacific). Remove this block and the #orderPauseBanner div above to restore normal ordering. -->
+  <script>
+  (function () {
+    var REOPEN = '2026-08-24'; // orders resume on/after this date (Pacific)
+
+    // Today's date in Pacific time as YYYY-MM-DD
+    var today;
+    try {
+      var parts = new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'America/Los_Angeles',
+        year: 'numeric', month: '2-digit', day: '2-digit'
+      }).formatToParts(new Date());
+      var y = '', m = '', d = '';
+      for (var i = 0; i < parts.length; i++) {
+        if (parts[i].type === 'year') y = parts[i].value;
+        if (parts[i].type === 'month') m = parts[i].value;
+        if (parts[i].type === 'day') d = parts[i].value;
+      }
+      today = y + '-' + m + '-' + d;
+    } catch (e) {
+      var n = new Date();
+      today = n.getFullYear() + '-' + String(n.getMonth() + 1).padStart(2, '0') + '-' + String(n.getDate()).padStart(2, '0');
+    }
+
+    // If we've reached the reopen date, do nothing — normal ordering resumes.
+    if (today >= REOPEN) return;
+
+    // Show the banner
+    var banner = document.getElementById('orderPauseBanner');
+    if (banner) banner.style.display = 'block';
+
+    var form = document.getElementById('orderForm');
+    if (!form) return;
+
+    // Disable every field and the submit button
+    form.querySelectorAll('input, textarea, select, button').forEach(function (el) {
+      el.disabled = true;
+    });
+    form.style.opacity = '0.6';
+
+    // Replace the preview note with a clear closed message
+    var note = document.getElementById('submitNote');
+    if (note) {
+      note.textContent = 'Online ordering is paused until August 24, 2026.';
+      note.style.color = 'var(--flag-red, #ce1126)';
+      note.style.fontWeight = '600';
+    }
+
+    // Block submission outright, in case anything slips through
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      return false;
+    }, true);
+  })();
+  </script>
 </body>
 </html>
